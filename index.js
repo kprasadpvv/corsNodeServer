@@ -50,6 +50,10 @@ app.get('/crossSite', (req, res) => {
   res.json({ message: 'CORS test successful!' });
 });
 
+app.post('/crossSite', (req, res) => {
+  res.json({ message: 'CORS test successful!' });
+});
+
 // Start the server
 const PORT = 3000;
 const httpsOptions = {
