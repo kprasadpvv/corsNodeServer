@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test CORS</title>
+</head>
+<body>
+  <button id="sameSiteButton">Same request</button>
+  <button id="crosButton">Cros request</button>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+    $('#sameSiteButton').click(async function() {
+      try {
+        const response = await $.ajax({
+          url: 'https://local.example1.com:3000/sameSite',
+          method: 'GET',
+          xhrFields: {
+            withCredentials: true
+          }
+        });
+
+        console.log(response);
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
+    });
+    $('#crosButton').click(async function() {
+      try {
+        const response = await $.ajax({
+          url: 'https://local.example2.com:3000/crossSite',
+          method: 'POST',
+          crossDomain: true,
+          contentType: 'application/json',
+          xhrFields: {
+            withCredentials: true,
+          }
+        });
+
+        console.log(response);
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
+    });
+  });
+  </script>
+</body>
+</html>
