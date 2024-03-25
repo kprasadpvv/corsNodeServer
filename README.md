@@ -15,4 +15,4 @@
 
 6) do `npm start`
 7) Visit <https://local.example1.com:3000/test> and allow browser certificate check. do same for <https://local.example2.com:3000/test>
-8) Now click on the buttons to test the cookies.
+8) Now click the buttons present in https://local.example1.com:3000/test to test the cookies transfer on xhr calls.
