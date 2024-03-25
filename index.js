@@ -18,7 +18,7 @@ const corsOptions = {
     }
   }, */
   origin: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'crossDomain'],
   allowPreFlight: true,
   allowPrivateOrigins: true,
   allowPrivateNetworks: true,
