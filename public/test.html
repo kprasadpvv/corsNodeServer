@@ -7,12 +7,14 @@
 </head>
 <body>
   <button id="sameSiteButton">Same request</button>
+  <button id="setCookieButton">Set Example2 cookie</button>
   <button id="crosButton">Cros request</button>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     $(document).ready(function() {
     $('#sameSiteButton').click(async function() {
       try {
+        console.log(`cookies: ${document.cookie}`);
         const response = await $.ajax({
           url: 'https://local.example1.com:3000/sameSite',
           method: 'GET',
@@ -26,9 +28,31 @@
         console.error('Error:', error.message);
       }
     });
+    $('#setCookieButton').click(async function() {
+      try {
+        console.log(`cookies: ${document.cookie}`);
+        const response = await $.ajax({
+          url: 'https://local.example2.com:3000/set-example-cookie',
+          method: 'GET',
+          xhrFields: {
+            withCredentials: true
+          }
+        });
+
+        console.log(response);
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
+    });
     $('#crosButton').click(async function() {
       try {
-        const response = await $.ajax({
+        console.log(`cookies: ${document.cookie}`);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://local.example2.com:3000/crossSite', true);
+        xhr.withCredentials = true;
+        xhr.crossDomain = true;
+        const response = await xhr.send();
+        /* const response = await $.ajax({
           url: 'https://local.example2.com:3000/crossSite',
           method: 'POST',
           crossDomain: true,
@@ -36,7 +60,7 @@
           xhrFields: {
             withCredentials: true,
           }
-        });
+        }); */
 
         console.log(response);
       } catch (error) {

@@ -18,21 +18,29 @@ const corsOptions = {
     }
   }, */
   origin: true,
-  allowedHeaders: ['Content-Type', 'Authorization', 'crossDomain'],
-  allowPreFlight: true,
+  allowedHeaders: ['Content-Type', 'Authorization', 'crossDomain', 'cookies', 'Set-Cookie'],
+  /* allowPreFlight: true,
   allowPrivateOrigins: true,
-  allowPrivateNetworks: true,
+  allowPrivateNetworks: true, */
   credentials: true,
+  exposedHeaders: ['Content-Type', 'Authorization', 'crossDomain', 'cookies', 'Set-Cookie'],
   methods: 'GET, POST, PUT, DELETE, OPTIONS',
+  maxAge: 3600000,
 };
 
 app.use(cors(corsOptions));
+/* app.use(cors(corsOptions), (req, res, next) => {
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  //res.append('Access-Control-Allow-Origin', 'https://local.example1.com:3000');
+  res.setHeader('Access-Control-Allow-Origin', 'https://local.example1.com:3000');
+  next();
+}); */
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.options('*', cors()) // include before other routes
 app.get('/test', (req, res) => {
-  res.cookie('cookieNone', 'SameSiteNone', { httpOnly: true, domain: 'example1.com', sameSite: 'none', secure: true, maxAge: 3600000,});
-  res.cookie('cookieLax', 'SameSiteLax', { httpOnly: true, domain: 'example1.com', sameSite: 'lax', secure: true});
+  res.cookie('cookieNone', 'SameSiteNone', { httpOnly: false, domain: 'local.example1.com', sameSite: 'none', secure: true, maxAge: 3600000,});
+  res.cookie('cookieLax', 'SameSiteLax', { httpOnly: false, domain: 'example1.com', sameSite: 'lax', secure: true});
   res.cookie('cookieDefault', 'SameSiteDefault', { httpOnly: true, domain: 'example1.com'});
   res.sendFile(path.join(__dirname, 'public', 'test.html'));
   console.log(`response sent: ${res}`);
@@ -44,9 +52,8 @@ app.get('/sameSite', (req, res) => {
   res.json({ message: 'SameSite test successful!' });
 });
 
-app.get('/crossSite', (req, res) => {
-  console.log(req);
-  console.log(`response sent for callTest: ${res}`);
+app.get('/set-example-cookie', (req, res) => {
+  res.cookie('IDB2B-INTERNAL', 'Testcookieon2' , { httpOnly: true, domain: 'example2.com', sameSite: 'none', secure: true, maxAge: 3600000,});
   res.json({ message: 'CORS test successful!' });
 });
 
